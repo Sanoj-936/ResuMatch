@@ -16,9 +16,8 @@ export async function register({ username, email, password }) {
         return response.data
 
     } catch (err) {
-
         console.log(err)
-
+        throw err
     }
 
 }
@@ -35,6 +34,7 @@ export async function login({ email, password }) {
 
     } catch (err) {
         console.log(err)
+        throw err
     }
 
 }
@@ -47,7 +47,8 @@ export async function logout() {
         return response.data
 
     } catch (err) {
-
+        console.log(err)
+        throw err
     }
 }
 
@@ -60,7 +61,11 @@ export async function getMe() {
         return response.data
 
     } catch (err) {
-        console.log(err)
+        // 401 is expected when not logged in — don't log as error
+        if (err?.response?.status !== 401) {
+            console.log(err)
+        }
+        throw err
     }
 
 }
